@@ -14,8 +14,8 @@ Makefile
 # Executables
 *.exe
 *.out
-producer
-consumer
+/producer/producer
+/consumer/consumer
 
 # Object files
 *.o
