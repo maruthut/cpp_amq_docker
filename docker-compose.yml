@@ -8,6 +8,7 @@ services:
     environment:
       - ARTEMIS_USERNAME=admin
       - ARTEMIS_PASSWORD=admin
+      - ANONYMOUS_LOGIN=true  # Allow anonymous connections
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8161/console/ || exit 1"]
       interval: 30s

@@ -59,7 +59,9 @@ public:
         std::string connectFrame = "CONNECT\n";
         connectFrame += "accept-version:1.0,1.1,1.2\n";
         connectFrame += "host:" + host + "\n";
-        connectFrame += "\n\0";
+        connectFrame += "heart-beat:0,0\n";
+        connectFrame += "\n";
+        connectFrame += char(0); // null terminator
 
         if (send(sockfd, connectFrame.c_str(), connectFrame.length(), 0) < 0) {
             std::cerr << "Error sending CONNECT frame" << std::endl;
@@ -95,7 +97,8 @@ public:
         sendFrame += "destination:" + destination + "\n";
         sendFrame += "content-type:text/plain\n";
         sendFrame += "content-length:" + std::to_string(message.length()) + "\n";
-        sendFrame += "\n" + message + "\0";
+        sendFrame += "\n" + message;
+        sendFrame += char(0); // null terminator
 
         if (send(sockfd, sendFrame.c_str(), sendFrame.length(), 0) < 0) {
             std::cerr << "Error sending message" << std::endl;
@@ -107,7 +110,8 @@ public:
 
     void disconnect() {
         if (connected && sockfd >= 0) {
-            std::string disconnectFrame = "DISCONNECT\n\n\0";
+            std::string disconnectFrame = "DISCONNECT\n\n";
+            disconnectFrame += char(0); // null terminator
             send(sockfd, disconnectFrame.c_str(), disconnectFrame.length(), 0);
             close(sockfd);
             connected = false;
