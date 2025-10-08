@@ -1,0 +1,50 @@
+services:
+  activemq:
+    image: apache/activemq-artemis:latest
+    container_name: activemq-artemis
+    ports:
+      - "61613:61613"  # STOMP port exposed for optional host-side testing
+      - "8161:8161"    # Admin console (optional)
+    environment:
+      - ARTEMIS_USERNAME=admin
+      - ARTEMIS_PASSWORD=admin
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8161/console/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - amq-network
+
+  producer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        TARGET_APP: producer
+    container_name: cpp-producer
+    depends_on:
+      activemq:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - amq-network
+
+  consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        TARGET_APP: consumer
+    container_name: cpp-consumer
+    depends_on:
+      activemq:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - amq-network
+
+networks:
+  amq-network:
+    driver: bridge

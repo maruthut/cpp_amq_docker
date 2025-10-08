@@ -1,0 +1,51 @@
+# Build directories
+build/
+bin/
+obj/
+out/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Executables
+*.exe
+*.out
+producer
+consumer
+
+# Object files
+*.o
+*.obj
+*.lib
+*.a
+*.so
+*.dylib
+
+# IDE files
+.vscode/
+.vs/
+*.vcproj
+*.vcxproj
+*.sln
+*.user
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# OS specific
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Log files
+*.log
+
+# Dependencies
+third_party/
+external/
